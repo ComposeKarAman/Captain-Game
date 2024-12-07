@@ -21,8 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.captaingame.ui.theme.CaptainGameTheme
 import java.util.Random
 
@@ -42,7 +44,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CaptainGame(modifier : Modifier) {
-    Text("Captain Game", Modifier.padding(50.dp))
     val treasureFound = remember { mutableIntStateOf(0) }
     val stormEncountered = remember { mutableIntStateOf(0) }
     val direction = remember { mutableStateOf("North") }
@@ -50,6 +51,10 @@ fun CaptainGame(modifier : Modifier) {
     val context = LocalContext.current
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally)
     {
+        Text("Captain Game", Modifier.padding(50.dp),
+            fontWeight = FontWeight.Bold,
+            fontSize = 40.sp
+        )
         Text(text = "Treasure Found: ${treasureFound.intValue}")
         Text("Direction: ${direction.value}")
         Text("Storm Encountered: ${stormEncountered.intValue}")
