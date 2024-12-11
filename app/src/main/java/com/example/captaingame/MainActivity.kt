@@ -44,11 +44,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CaptainGame(modifier : Modifier) {
+
     val treasureFound = remember { mutableIntStateOf(0) }
     val stormEncountered = remember { mutableIntStateOf(0) }
     val direction = remember { mutableStateOf("North") }
     val hpRemaining = remember { mutableIntStateOf(100) }
+    val noChange = remember { mutableStateOf(false ) }
     val context = LocalContext.current
+
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally)
     {
         Text("Captain Game", Modifier.padding(50.dp),
@@ -119,8 +122,20 @@ fun CaptainGame(modifier : Modifier) {
             Text("Move South")
         }
         Spacer(modifier.height((16.dp)))
-        if (hpRemaining.intValue == 0){
+        if (hpRemaining.intValue <= 0){
+            noChange.value = true
+            hpRemaining.intValue = 0
             Text("Game Over")
+            Spacer(Modifier.padding(6.dp))
+            Button({
+                treasureFound.intValue = 0
+                stormEncountered.intValue = 0
+                direction.value = "North"
+                hpRemaining.intValue = 100
+            })
+            {
+                Text("RETRY")
+            }
         }
     }
 }
