@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,10 +50,12 @@ fun CaptainGame(modifier : Modifier) {
     val stormEncountered = remember { mutableIntStateOf(0) }
     val direction = remember { mutableStateOf("North") }
     val hpRemaining = remember { mutableIntStateOf(100) }
-    val noChange = remember { mutableStateOf(false ) }
     val context = LocalContext.current
 
-    Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally)
+    if (hpRemaining.intValue > 0){
+    Column(Modifier.fillMaxSize(),
+        Arrangement.Center,
+        Alignment.CenterHorizontally)
     {
         Text("Captain Game", Modifier.padding(50.dp),
             fontWeight = FontWeight.Bold,
@@ -74,7 +77,7 @@ fun CaptainGame(modifier : Modifier) {
         }
     })
         {
-            Text("Move to East")
+            Text("Move East")
         }
 
         Button({
@@ -122,20 +125,38 @@ fun CaptainGame(modifier : Modifier) {
             Text("Move South")
         }
         Spacer(modifier.height((16.dp)))
-        if (hpRemaining.intValue <= 0){
-            noChange.value = true
-            hpRemaining.intValue = 0
-            Text("Game Over")
-            Spacer(Modifier.padding(6.dp))
-            Button({
-                treasureFound.intValue = 0
-                stormEncountered.intValue = 0
-                direction.value = "North"
-                hpRemaining.intValue = 100
-            })
-            {
-                Text("RETRY")
-            }
+        }
+
+    }else{
+        Column(
+            Modifier.fillMaxSize(),
+            Arrangement.Center,
+            Alignment.CenterHorizontally)
+        {
+            Text("YOUR SCORE",
+                fontWeight = FontWeight.Bold,
+                fontSize = 40.sp)
+            Spacer(Modifier.height(16.dp))
+            Text(
+                "Treasure Found: ${treasureFound.intValue}\n"+
+                "Storm Encountered: ${stormEncountered.intValue} ",
+                fontSize = 20.sp,
+                color = Color.Gray
+            )
+            Spacer(Modifier.height(16.dp))
+
+                Text("Game Over")
+
+            Spacer(Modifier.height(4.dp))
+                Button({
+                    treasureFound.intValue = 0
+                    stormEncountered.intValue = 0
+                    direction.value = "North"
+                    hpRemaining.intValue = 100
+                })
+                {
+                    Text("RETRY")
+                }
         }
     }
 }
